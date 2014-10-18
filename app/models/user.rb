@@ -3,4 +3,8 @@ class User < ActiveRecord::Base
   validates :email, email: true
 
   has_many :messages
+
+  def message_count
+    messages.count
+  end
 end

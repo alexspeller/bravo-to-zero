@@ -5,7 +5,7 @@ class GmailSyncer
     @user = User.find user_id
     @total_cached_messages = 0
     query_message_count
-
+    user.messages.delete_all
     get_next_page
   end
 

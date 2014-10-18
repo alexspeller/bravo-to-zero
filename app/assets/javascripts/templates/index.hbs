@@ -1,0 +1,11 @@
+<h2>Messages</h2>
+
+<h3>By from</h3>
+<dl>
+  {{#each topMessagesByFrom}}
+      <dt>{{key}}</dt>
+      <dd>{{value}}</dd>
+  {{/each}}
+</dl>
+from: {{groupCounts.from}}
+fromParse: {{groupCounts.fromParsed}}

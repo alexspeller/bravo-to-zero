@@ -5,6 +5,11 @@ Rails.application.routes.draw do
 
   resources :syncs
 
+  namespace :api do
+    resource :session
+    resources :messages
+  end
+
   # The priority is based upon order of creation: first creat
   # ed -> highest priority.
   # See how all your routes lay out with "rake routes".

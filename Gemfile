@@ -29,11 +29,15 @@ group :development do
   gem 'pry-rails'
 end
 
-gem 'sidekiq'
+gem 'ember-rails'
 gem 'google-api-client', require: 'google/api_client'
 gem 'omniauth-google-oauth2'
 gem 'haml'
 gem 'validator'
+gem 'bootstrap-sass'
+gem "d3-rails"
+gem 'yajl-ruby', require: 'yajl'
+gem 'crossfilter-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
