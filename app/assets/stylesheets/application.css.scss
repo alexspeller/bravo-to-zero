@@ -1,3 +1,8 @@
+//= require antiscroll
 //= require ember-table
 
 @import "bootstrap";
+
+.table-container {
+  height: 500px;
+}

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   namespace :api do
     resource :session
     resources :messages
+    resources :archive_requests
   end
 
   # The priority is based upon order of creation: first creat

@@ -1,11 +1,26 @@
 <h2>Messages</h2>
+<button {{action 'sync'}}>Sync</button>
 
-<h3>By from</h3>
-<dl>
-  {{#each topMessagesByFrom}}
-      <dt>{{key}}</dt>
-      <dd>{{value}}</dd>
-  {{/each}}
-</dl>
-from: {{groupCounts.from}}
-fromParse: {{groupCounts.fromParsed}}
+<div class="row">
+  <div class="col-md-4">
+    <h3>By from</h3>
+    <dl>
+      {{#each topMessagesByFrom}}
+          <dt>{{key}}</dt>
+          <dd>{{value}} <button {{action 'showMessagesFrom' key}}>Show</button></dd>
+      {{/each}}
+    </dl>
+  </div>
+
+  <div class="col-md-8">
+    <div class="table-container">
+      {{table-component
+        hasFooter=false
+        columns=columns
+        content=tableMessages
+      }}
+    </div>
+    <button {{action 'archiveAll'}}>Archive All</button>
+  </div>
+</div>
+

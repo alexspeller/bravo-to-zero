@@ -38,7 +38,9 @@ gem 'bootstrap-sass'
 gem "d3-rails"
 gem 'yajl-ruby', require: 'yajl'
 gem 'crossfilter-rails'
-
+gem 'jquery-ui-rails'
+gem 'jquery-mousewheel-rails'
+gem 'antiscroll_rails', git: 'https://github.com/alexspeller/antiscroll_rails'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

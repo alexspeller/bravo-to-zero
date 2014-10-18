@@ -1,4 +1,7 @@
 //= require jquery
+//= require jquery-ui
+//= require jquery.mousewheel
+//= require antiscroll
 //= require d3
 //= require crossfilter
 //= require handlebars
