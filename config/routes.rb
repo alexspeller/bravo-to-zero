@@ -3,7 +3,10 @@ Rails.application.routes.draw do
 
   get "/auth/:provider/callback" => "omniauth#callback"
 
-  # The priority is based upon order of creation: first created -> highest priority.
+  resources :syncs
+
+  # The priority is based upon order of creation: first creat
+  # ed -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"

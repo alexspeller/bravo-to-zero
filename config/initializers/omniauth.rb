@@ -3,7 +3,8 @@ raise "Missing BRAVO_GOOGLE_CLIENT_SECRET" unless ENV["BRAVO_GOOGLE_CLIENT_SECRE
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :google_oauth2, ENV["BRAVO_GOOGLE_CLIENT_ID"], ENV["BRAVO_GOOGLE_CLIENT_SECRET"],
-    scope: "email,profile,gmail.readonly,gmail.modify"
+    scope: "email,profile,gmail.readonly,gmail.modify",
+    prompt: 'consent'
 end
 
 $google_api_client = Google::APIClient.new(

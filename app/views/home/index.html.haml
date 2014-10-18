@@ -1,3 +1,9 @@
 %h1 Bravo
 
-%p Hello
+
+
+- if current_user.present?
+  %h2 Logged in as #{image_tag current_user.image_url} #{current_user.name}
+  =link_to "Sync now", syncs_url, method: :post
+- else
+  %p=link_to "Login with google", '/auth/google_oauth2'
