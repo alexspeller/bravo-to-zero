@@ -1,5 +1,5 @@
 class BulkGmailWorker
-  attr_reader :user, :completed_count, :total_count, :query, :auth, :current_page
+  attr_reader :user, :completed_count, :total_count, :auth
 
   include Sidekiq::Worker
 
@@ -7,7 +7,6 @@ class BulkGmailWorker
   def start_bulk_action
     @completed_count  = 0
     @total_count      = 0
-    @current_page     = 1
 
     user.with_lock do
       if user.is_syncing?
@@ -19,15 +18,19 @@ class BulkGmailWorker
     end
 
 
-    logger.info "Starting bulk action #{self.class.name} for #{user.email} with query #{query}"
+    logger.info "Starting bulk action #{self.class.name} for #{user.email}"
     push_progress 0
     get_auth
     query_total
+
+    logger.info "Total count for #{user.email} is #{total_count}"
 
     get_next_page
     push_progress 'complete'
     logger.info "Completed bulk action for #{user.email}"
 
+  rescue Exception => e
+    logger.error "Error running archive worker for #{user.email}:\n#{e.class}\n#{e.message}\n#{e.backtrace.join "\n"}"
   ensure
     user.is_syncing = false
     user.save!
@@ -39,20 +42,8 @@ class BulkGmailWorker
     @auth.fetch_access_token!
   end
 
-  def query_total
-    params      = {userId: 'me', id: 'INBOX'}
-    params[:q]  = query if query.present?
-
-    result = $google_api_client.execute(api_method: $gmail_api.users.labels.get,
-      parameters: params,
-      authorization: auth)
-
-    @total_count = result.data.messages_total
-  end
-
   def get_next_page page = nil
     params              = {userId: 'me', labelIds: 'INBOX', maxResults: 10}
-    params[:q]          = query if query.present?
     params[:pageToken]  = page if page.present?
 
     page = $google_api_client.execute(api_method: $gmail_api.users.messages.list,
@@ -67,9 +58,9 @@ class BulkGmailWorker
 
 
   def perform_action_for_page page
-    logger.info "Getting page #{current_page} of messages for #{user.email}"
+    logger.info "Getting page of messages for #{user.email}"
 
-    if page.data.messages.count == 0
+    if messages_for_page(page).count == 0
       logger.info "Page was empty"
       return
     end
@@ -83,7 +74,7 @@ class BulkGmailWorker
       @completed_count += 1
     end
 
-    page.data.messages.each do |message|
+    messages_for_page(page).each do |message|
       batch.add request_message_action(message)
     end
 
@@ -92,9 +83,11 @@ class BulkGmailWorker
     logger.info "Percentage complete: #{percentage_complete}"
     push_progress percentage_complete
 
-    if page.next_page_token
+    page_complete page
+
+    if next_page_for_page(page)
       sleep 1 # Sleep is due to api rate limiting
-      get_next_page page.next_page_token
+      get_next_page next_page_for_page(page)
     end
 
   end
@@ -105,9 +98,14 @@ class BulkGmailWorker
     0
   end
 
+
+  def page_complete *args
+    # noop
+  end
+
   def push_progress percentage
     user.push 'progress', type: push_type,
-      percentage: percentage, query: query
+      percentage: percentage
   end
 
 end

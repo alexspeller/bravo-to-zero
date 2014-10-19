@@ -2,8 +2,8 @@
 //= require jquery-ui
 //= require jquery.mousewheel
 //= require antiscroll
-//= require d3
-//= require crossfilter
+//= require nvd3-rails
+//= require moment
 //= require pusher
 //= require handlebars
 //= require ember

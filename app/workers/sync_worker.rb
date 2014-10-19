@@ -10,6 +10,15 @@ class SyncWorker < BulkGmailWorker
     'Syncing your messages with Google'
   end
 
+  def query_total
+    params      = {userId: 'me', id: 'INBOX'}
+
+    result = $google_api_client.execute(api_method: $gmail_api.users.labels.get,
+      parameters: params,
+      authorization: auth)
+
+    @total_count = result.data.messages_total
+  end
 
   def request_message_action message
     {
@@ -35,6 +44,15 @@ class SyncWorker < BulkGmailWorker
   rescue
     logger.error "Could not cache message #{message.data.id} for user #{user.email}"
   end
+
+  def messages_for_page page
+    page.data.messages
+  end
+
+  def next_page_for_page page
+    page.next_page_token
+  end
+
 
   def find_header header_name, message
     message.data.payload.headers.find{|h| h.name.strip.downcase == header_name.downcase }.value

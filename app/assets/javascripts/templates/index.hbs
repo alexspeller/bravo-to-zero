@@ -13,37 +13,50 @@
         </div>
       </div>
     </p>
-    {{#if progressQuery}}
-      <strong>Query:</strong> {{progressQuery}}
-    {{/if}}
   </div>
 {{/if}}
 
 <h2>Messages</h2>
 
-
 <button {{action 'sync'}}>Sync</button>
 
-<div class="row">
-  <div class="col-md-4">
-    <h3>By from</h3>
-    <dl>
-      {{#each topMessagesByFrom}}
-          <dt>{{key}}</dt>
-          <dd>{{value}} <button {{action 'showMessagesFrom' key}}>Show</button></dd>
-      {{/each}}
-    </dl>
+{{#if model.length}}
+  <div class="row">
+    filterKey: {{filterKey}}
+    <button {{action 'setFilter' 'from'}}>From (Full)</button>
+    <button {{action 'setFilter' 'fromEmail'}}>From (Email only)</button>
+    <button {{action 'setFilter' 'fromDomain'}}>From (Domain only)</button>
+    <button {{action 'setFilter' 'subject'}}>Subject</button>
+    <button {{action 'setFilter' 'to'}}>To</button>
+    <button {{action 'setFilter' 'date'}}>Date</button>
+
   </div>
 
-  <div class="col-md-8">
-    <div class="table-container">
-      {{table-component
-        hasFooter=false
-        columns=columns
-        content=tableMessages
-      }}
+  <div class="row">
+    <div class="col-md-4">
+      <h3>By from</h3>
+      key: {{selectedGroup.key}}
+      value: {{filterValue}}
+      <div class="table-container">
+        {{table-component
+          hasFooter=false
+          columns=groupColumns
+          content=groups
+          selection=selectedGroup
+        }}
+      </div>
     </div>
-    <button {{action 'archiveAll'}}>Archive All</button>
-  </div>
-</div>
 
+    <div class="col-md-8">
+      <div class="table-container">
+        {{table-component
+          hasFooter=false
+          columns=columns
+          content=tableMessages
+          selectionMode='none'
+        }}
+      </div>
+      <button {{action 'archiveAll'}}>Archive All</button>
+    </div>
+  </div>
+{{/if}}

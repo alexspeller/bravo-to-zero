@@ -14,9 +14,13 @@ App.ApplicationRoute = Em.Route.extend
 
       window.pushChannel = pusher.subscribe "private-user_#{context.session.user.id}"
       pushChannel.bind 'progress', (data) =>
-        console.log "Push event", data
+        console.log "Push event: progress", data
         Em.run =>
           @controllerFor('index').progress data
+      pushChannel.bind 'messages-archived', (data) =>
+        console.log "Push event: messages-archived", data
+        Em.run =>
+          @controllerFor('index').archived data.ids
 
 
 

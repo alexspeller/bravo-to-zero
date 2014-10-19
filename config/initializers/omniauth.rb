@@ -22,4 +22,7 @@ auth.scope = 'https://mail.google.com/'
 
 $google_api_client.authorization = auth
 
-$gmail_api = $google_api_client.discovered_api('gmail', 'v1')
+json = Rails.root.join('config/gmail_api.json').read
+$google_api_client.register_discovery_document 'gmail', 'v1', json
+
+$gmail_api = $google_api_client.discovered_api 'gmail', 'v1'

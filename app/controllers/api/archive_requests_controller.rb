@@ -3,8 +3,7 @@ class Api::ArchiveRequestsController < ApiController
     if current_user.is_syncing?
       render_sync_busy
     else
-      query = "from:#{params[:email]}"
-      ArchiveWorker.perform_async current_user.id, query
+      ArchiveWorker.perform_async current_user.id, params[:ids]
       head :ok
     end
   end
