@@ -1,45 +1,70 @@
-{{#if progressType}}
-  <div class="alert alert-info">
-    <h4>
-      {{progressType}}
-      {{#if progressComplete}}
-        - Complete!
-      {{/if}}
-    </h4>
-    <p>
-      <div class="progress">
-        <div class="progress-bar" {{bind-attr style=progressStyle}}>
-          {{progressPercentage}}%
-        </div>
-      </div>
-    </p>
-  </div>
-{{/if}}
-
-<h2>Messages</h2>
-
-<button {{action 'sync'}}>Sync</button>
-
 {{#if model.length}}
   <div class="row">
-    filterKey: {{filterKey}}
-    <button {{action 'setFilter' 'from'}}>From (Full)</button>
-    <button {{action 'setFilter' 'fromEmail'}}>From (Email only)</button>
-    <button {{action 'setFilter' 'fromDomain'}}>From (Domain only)</button>
-    <button {{action 'setFilter' 'subject'}}>Subject</button>
-    <button {{action 'setFilter' 'to'}}>To</button>
-    <button {{action 'setFilter' 'date'}}>Date</button>
+    <div class="col-md-12">
+      <h2>Step 1: Group Method</h2>
+      <p>
+        <div class="btn-group btn-group-justified">
+          <div class='btn-group'>
+            <button {{bind-attr class="isFilteringByfrom:active"}}{{action 'setFilter' 'from'}} title="Full from header, e.g. 'Alex Speller &lt;alex@alexspeller.com&gt;' - sometimes this is too specific">From (Full)</button>
+          </div>
+          <div class='btn-group'>
+            <button {{bind-attr class="isFilteringByfromEmail:active"}}{{action 'setFilter' 'fromEmail'}}>From (Email only)</button>
+          </div>
+          <div class='btn-group'>
+            <button {{bind-attr class="isFilteringByfromDomain:active"}}{{action 'setFilter' 'fromDomain'}}>From (Domain only)</button>
+          </div>
+          <div class='btn-group'>
+            <button {{bind-attr class="isFilteringBysubject:active"}}{{action 'setFilter' 'subject'}}>Subject</button>
+          </div>
+          <div class='btn-group'>
+            <button {{bind-attr class="isFilteringByto:active"}}{{action 'setFilter' 'to'}}>To</button>
+          </div>
+          <div class='btn-group'>
+            <button {{bind-attr class="isFilteringBydate:active"}}{{action 'setFilter' 'date'}}>Date</button>
+          </div>
+        </div>
 
+      </p>
+      <p>Select a group method to group your messages by. This lets you easily group your mail by a certain field and figure out which group of messages gives the most impact to archive.</p>
+    </div>
   </div>
 
   <div class="row">
-    {{bar-chart columns=groups action="chartClicked"}}
+    <div class="col-md-12">
+      <h3>Message distribution</h3>
+      <p>Hover over a bar to see which group it represents. Click a bar to select that group.</p>
+      <p>
+        {{bar-chart columns=groups action="chartClicked"}}
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      {{#if progressType}}
+        <div class="alert alert-info">
+          <h4>
+            {{progressType}}
+            {{#if progressComplete}}
+              - Complete!
+            {{/if}}
+          </h4>
+          <p>
+            <div class="progress">
+              <div class="progress-bar" {{bind-attr style=progressStyle}}>
+                {{progressPercentage}}%
+              </div>
+            </div>
+          </p>
+        </div>
+      {{/if}}
+
+    </div>
   </div>
   <div class="row">
-    <div class="col-md-4">
-      <h3>By from</h3>
-      key: {{selectedGroup.key}}
-      value: {{filterValue}}
+    <div class="col-md-3">
+      <h3>Grouping by {{filterKeyTitle}}</h3>
+      <p>Select a group to show messages</p>
       <div class="table-container">
         {{table-component
           hasFooter=false
@@ -50,16 +75,28 @@
       </div>
     </div>
 
-    <div class="col-md-8">
-      <div class="table-container">
-        {{table-component
-          hasFooter=false
-          columns=columns
-          content=tableMessages
-          selectionMode='none'
-        }}
-      </div>
-      <button {{action 'archiveAll'}}>Archive All</button>
+    <div class="col-md-9">
+      {{#if filterValue}}
+        <div class="pull-right">
+          <button {{action 'archiveAll'}} class='btn-primary'>Archive All {{tableMessages.length}} messages below</button>
+        </div>
+      {{/if}}
+      <h3>Messages</h3>
+      {{#if filterValue}}
+        <p>Showing messages matching {{filterValue}}</p>
+        <div class="table-container">
+          {{table-component
+            hasFooter=false
+            columns=columns
+            content=tableMessages
+            selectionMode='none'
+          }}
+        </div>
+      {{else}}
+        <p>
+          <em>Select a group to view the messages in it</em>
+        </p>
+      {{/if}}
     </div>
   </div>
 {{/if}}

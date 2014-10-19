@@ -2,8 +2,48 @@
 //= require ember-table
 //= require nvd3-rails
 
+@import "variables";
 @import "bootstrap";
+@import "bootstrap/theme";
 
+body {
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+.navbar-header {
+  h3 {
+    margin-top: 10px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.87);
+  }
+}
 .table-container {
   height: 500px;
+}
+
+button {
+  @extend .btn,.btn-default;
+}
+
+.jumbotron {
+  background-image: image-url("camo.jpg");
+
+  h1, p {
+    color: white;
+  }
+  h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.87);
+  }
+  p {
+    .stripe {
+      background-color: black;
+      padding: 5px;
+    }
+  }
+}
+
+img.screenshot {
+  display: block;
+  margin: 0 auto;
 }

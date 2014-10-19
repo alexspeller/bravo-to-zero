@@ -1,7 +1,7 @@
 App.BarChartComponent = Em.Component.extend
   tagName: 'svg'
   attributeBindings: ['height']
-  height: 300
+  height: 200
 
   data: prop 'columns.[]', ->
     console.log 'data'
@@ -30,7 +30,7 @@ App.BarChartComponent = Em.Component.extend
         .transitionDuration 350
         .tooltipContent (key, x, y, e, graph) ->
           "<h3>#{Handlebars.Utils.escapeExpression x}</h3>
-           <p>#{y}</p>"
+           <p>#{y} emails</p>"
 
       @chart.yAxis
         .tickFormat d3.format('d')

@@ -1,0 +1,69 @@
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-header">
+      <h3>Bravo to Zero</h3>
+    </div>
+    {{#if session.user}}
+
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a {{action 'sync'}} href='#' title='Re-sync your messages with your Gmail account'>Sync</a>
+        </li>
+        <li>
+          <a {{action 'logOut'}} href='#'>Log out</a>
+        </li>
+      </ul>
+      <p class="navbar-text navbar-right">
+        Logged in as {{session.user.name}}
+      </p>
+    {{else}}
+      <a href="/auth/google_oauth2" class="btn btn-default navbar-btn navbar-right">
+        Log in with Google
+      </a>
+    {{/if}}
+
+  </div>
+</nav>
+
+{{#if session.user}}
+  <div class="container">
+    {{outlet}}
+  </div>
+{{else}}
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Bravo to Zero</h1>
+      <p>
+        <span class="stripe">
+          Get your inbox back to zero in record time
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="col-md-12">
+      <p>Inbox Zero is great in theory, but it's easy to let it slip and suddenly there are hundreds of emails in your inbox and it takes forever to archive them!</p>
+      <p>
+        <strong>Bravo to Zero</strong> makes it easy to get back to zero,
+        by showing you groups of emails that you can archive in bulk!
+      </p>
+      <%= image_tag 'screenshot.png', class: 'screenshot' %>
+    </div>
+  </div>
+{{/if}}
+
+
+<div id="footer">
+  <div class="container">
+    <p class="muted credit text-center">
+      This project was built in 48 hours for the 2014 Rails Rumble by
+      <a href="http://twitter.com/alexspeller">@alexspeller</a>
+    </p>
+  </div>
+</div>
+{{#if isShowingVoteBanner}}
+  <div id="rumble2014" style="position: fixed; display: block; width: 100%; z-index: 99999; bottom: 0px; left: 0px; padding: 10px 0px; text-align: center; margin: 0px; color: rgb(176, 176, 176); background-color: rgb(22, 22, 22);"><span>You can <a href="http://railsrumble.com/?view=http://bravo.r14.railsrumble.com" style="color: #fc4b52; font-weight: bolder; text-decoration: none;">vote for us</a>
+  in the <a href="http://railsrumble.com" style="color: rgb(255, 255, 255); font-weight: bolder; text-decoration: none;">2014 Rails Rumble</a>!</span><span id="rumbleCloseButton" style="position: absolute; right: 12px; cursor: pointer; top: 8px;" {{action 'hideBanner'}}>x</span></div>
+{{/if}}

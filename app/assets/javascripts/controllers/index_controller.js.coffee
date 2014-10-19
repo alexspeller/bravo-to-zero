@@ -2,6 +2,13 @@
 App.IndexController = Em.Controller.extend
   filterKey: 'from'
 
+  filterKeyTitle: prop 'filterKey', ->
+    switch @get('filterKey')
+      when 'fromEmail' then "From (Email address only)"
+      when 'fromDomain' then "From (Domain only)"
+      else
+        @get('filterKey').capitalize()
+
   groupFunc: prop 'filterKey', ->
     switch @get('filterKey')
       when 'from'
@@ -69,10 +76,12 @@ App.IndexController = Em.Controller.extend
   groupColumns: prop ->
     key = Ember.Table.ColumnDefinition.create
       headerCellName: "Key"
+      defaultColumnWidth: 212
       getCellContent: (row) ->
         row.content.key
     value = Ember.Table.ColumnDefinition.create
       headerCellName: "Value"
+      defaultColumnWidth: 50
       getCellContent: (row) ->
         row.content.value
     [key, value]
@@ -93,8 +102,9 @@ App.IndexController = Em.Controller.extend
     date = Ember.Table.ColumnDefinition.create
       headerCellName: "Date"
       getCellContent: (row) ->
-        row.content.date
+        moment(row.content.date).calendar()
     snippet = Ember.Table.ColumnDefinition.create
+      defaultColumnWidth: 250
       headerCellName: "Preview"
       getCellContent: (row) ->
         row.content.snippet
@@ -106,11 +116,13 @@ App.IndexController = Em.Controller.extend
       snippet
     ]
 
-  tableMessages: prop 'groupFunc', 'filterValue', ->
+  tableMessages: prop 'groupFunc', 'filterValue', 'model.[]', ->
     [groupFunc, value] = [@get('groupFunc'), @get('filterValue')]
     return [] unless groupFunc and value
     @get('model').filter (message) ->
       groupFunc(message) is value
+    .sort (a, b) ->
+      b.date - a.date
 
   progress: (data) ->
     @setProperties
@@ -132,36 +144,25 @@ App.IndexController = Em.Controller.extend
     messagesToRemove = @get('model').filter (message) ->
       ~messageIds.indexOf message.id
 
+    tableLength = @get('tableMessages.length')
     @get('model').removeObjects messagesToRemove
+    if tableLength > 0 and @get('tableMessages.length') is 0
+      @set 'selectedGroup', null
 
+  isFilteringByfrom:        Em.computed.equal 'filterKey', 'from'
+  isFilteringByfromEmail:   Em.computed.equal 'filterKey', 'fromEmail'
+  isFilteringByfromDomain:  Em.computed.equal 'filterKey', 'fromDomain'
+  isFilteringBysubject:     Em.computed.equal 'filterKey', 'subject'
+  isFilteringByto:          Em.computed.equal 'filterKey', 'to'
+  isFilteringBydate:        Em.computed.equal 'filterKey', 'date'
 
   progressStyle: prop 'progressPercentage', ->
     "width: #{@get 'progressPercentage'}%; min-width: 20px;"
-
-  reportError: (error) ->
-    msg = error?.jqXHR?.responseJSON?.error || "Request failed"
-    alert msg
 
   actions:
     chartClicked: (groupRow) ->
       @set 'selectedGroup', groupRow
 
-    setFilter: (key) -> @set 'filterKey', key
-
-    archiveAll: ->
-      ajax.request '/api/archive_requests',
-        method: 'POST'
-        data:
-          ids: @get('tableMessages').mapBy('id')
-      .then ->
-        console.log 'archive request sent',
-      , (error) =>
-        @reportError error
-    sync: ->
-      ajax.request '/api/syncs',
-        method: 'POST'
-      .then ->
-        console.log 'Sync request sent'
-      , (error) =>
-        @reportError error
-
+    setFilter: (key) ->
+      @set 'filterKey', key
+      @set 'selectedGroup', null
