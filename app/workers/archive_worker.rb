@@ -8,6 +8,10 @@ class ArchiveWorker < BulkGmailWorker
     start_bulk_action
   end
 
+  def push_type
+    'Archiving your messages'
+  end
+
   def request_message_action message
     {
       api_method: $gmail_api.users.messages.modify,

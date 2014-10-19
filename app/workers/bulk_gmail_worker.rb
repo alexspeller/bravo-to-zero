@@ -9,14 +9,28 @@ class BulkGmailWorker
     @total_count      = 0
     @current_page     = 1
 
-    logger.info "Starting bulk action #{self.class.name} for #{user.email} with query #{query}"
+    user.with_lock do
+      if user.is_syncing?
+        logger.info "User is already syncing, only one action at a time"
+        return
+      end
+      user.is_syncing = true
+      user.save!
+    end
 
+
+    logger.info "Starting bulk action #{self.class.name} for #{user.email} with query #{query}"
+    push_progress 0
     get_auth
     query_total
 
     get_next_page
-
+    push_progress 'complete'
     logger.info "Completed bulk action for #{user.email}"
+
+  ensure
+    user.is_syncing = false
+    user.save!
   end
 
   def get_auth
@@ -77,6 +91,7 @@ class BulkGmailWorker
     $google_api_client.execute(batch, authorization: auth)
 
     logger.info "Percentage complete: #{percentage_complete}"
+    push_progress percentage_complete
 
     if page.next_page_token
       sleep 1 # Sleep is due to api rate limiting
@@ -91,5 +106,9 @@ class BulkGmailWorker
     0
   end
 
+  def push_progress percentage
+    user.push 'progress', type: push_type,
+      percentage: percentage, query: query
+  end
 
 end

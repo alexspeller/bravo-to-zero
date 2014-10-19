@@ -18,6 +18,9 @@ class OmniauthController < ApplicationController
     session[:google_credentials] = user_credentials.fetch_access_token!
     user.save!
     session[:user_id] = user.id
+
+    SyncWorker.perform_async(user.id)
+
     redirect_to root_url
   end
 

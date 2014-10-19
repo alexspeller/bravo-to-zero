@@ -3,12 +3,18 @@ Rails.application.routes.draw do
 
   get "/auth/:provider/callback" => "omniauth#callback"
 
-  resources :syncs
 
   namespace :api do
     resource :session
     resources :messages
     resources :archive_requests
+    resources :syncs
+    post 'pusher/auth', to: 'pusher#auth'
+  end
+
+  if Rails.env.development?
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
   end
 
   # The priority is based upon order of creation: first creat

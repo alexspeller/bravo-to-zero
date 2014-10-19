@@ -40,6 +40,31 @@ App.IndexController = Em.Controller.extend
       date
       snippet
     ]
+
+  progress: (data) ->
+    @setProperties
+      progressPercentage: data.percentage,
+      progressQuery:      data.query,
+      progressType:       data.type
+
+    if data.percentage is 'complete'
+      @set 'progressComplete', true
+      @send 'refreshData'
+      Em.run.later =>
+        @setProperties
+          progressPercentage: null
+          progressQuery:      null
+          progressType:       null
+          progressComplete:   null
+      , 500
+
+  progressStyle: prop 'progressPercentage', ->
+    "width: #{@get 'progressPercentage'}%; min-width: 20px;"
+
+  reportError: (error) ->
+    msg = error?.jqXHR?.responseJSON?.error || "Request failed"
+    alert msg
+
   actions:
     showMessagesFrom: (email) ->
       @set 'fromFilter', email
@@ -51,9 +76,14 @@ App.IndexController = Em.Controller.extend
         data:
           email: @get('fromFilter')
       .then ->
-        alert 'archived'
+        console.log 'archive request sent',
+      , (error) =>
+        @reportError error
     sync: ->
-      ajax.request '/syncs',
+      ajax.request '/api/syncs',
         method: 'POST'
       .then ->
-        alert 'synced'
+        console.log 'Sync request sent'
+      , (error) =>
+        @reportError error
+

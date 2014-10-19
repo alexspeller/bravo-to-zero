@@ -1,8 +1,13 @@
 class SyncWorker < BulkGmailWorker
   def perform user_id
     @user = User.find user_id
+
     user.messages.delete_all
     start_bulk_action
+  end
+
+  def push_type
+    'Syncing your messages with Google'
   end
 
 

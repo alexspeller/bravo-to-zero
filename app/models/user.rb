@@ -7,4 +7,12 @@ class User < ActiveRecord::Base
   def message_count
     messages.count
   end
+
+  def push event, data={}
+    Pusher[push_channel].trigger event, data
+  end
+
+  def push_channel
+    "private-user_#{id}"
+  end
 end

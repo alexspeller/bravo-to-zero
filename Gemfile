@@ -28,6 +28,8 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 group :development do
   gem 'spring'
   gem 'pry-rails'
+  # for sidekiq web
+  gem 'sinatra', '>= 1.3.0', require: nil
 end
 
 gem 'ember-rails'
@@ -44,6 +46,7 @@ gem 'jquery-mousewheel-rails'
 gem 'antiscroll_rails', git: 'https://github.com/alexspeller/antiscroll_rails'
 gem 'sidekiq'
 gem 'foreman'
+gem 'pusher'
 gem 'rails_12factor'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

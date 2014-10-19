@@ -4,6 +4,7 @@
 //= require antiscroll
 //= require d3
 //= require crossfilter
+//= require pusher
 //= require handlebars
 //= require ember
 //= require ember-table

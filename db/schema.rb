@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141018041144) do
+ActiveRecord::Schema.define(version: 20141019140816) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,11 +34,12 @@ ActiveRecord::Schema.define(version: 20141018041144) do
   add_index "messages", ["user_id", "to"], name: "index_messages_on_user_id_and_to", using: :btree
 
   create_table "users", force: true do |t|
-    t.string "name"
-    t.string "email"
-    t.string "refresh_token"
-    t.string "image_url"
-    t.string "most_recent_message_id"
+    t.string  "name"
+    t.string  "email"
+    t.string  "refresh_token"
+    t.string  "image_url"
+    t.string  "most_recent_message_id"
+    t.boolean "is_syncing"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree

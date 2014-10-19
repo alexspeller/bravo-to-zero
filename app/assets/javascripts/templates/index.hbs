@@ -1,4 +1,27 @@
+{{#if progressType}}
+  <div class="alert alert-info">
+    <h4>
+      {{progressType}}
+      {{#if progressComplete}}
+        - Complete!
+      {{/if}}
+    </h4>
+    <p>
+      <div class="progress">
+        <div class="progress-bar" {{bind-attr style=progressStyle}}>
+          {{progressPercentage}}%
+        </div>
+      </div>
+    </p>
+    {{#if progressQuery}}
+      <strong>Query:</strong> {{progressQuery}}
+    {{/if}}
+  </div>
+{{/if}}
+
 <h2>Messages</h2>
+
+
 <button {{action 'sync'}}>Sync</button>
 
 <div class="row">
