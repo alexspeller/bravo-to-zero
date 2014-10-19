@@ -44,6 +44,7 @@ gem 'jquery-mousewheel-rails'
 gem 'antiscroll_rails', git: 'https://github.com/alexspeller/antiscroll_rails'
 gem 'sidekiq'
 gem 'foreman'
+gem 'rails_12factor'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
