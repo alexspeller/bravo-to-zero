@@ -70,7 +70,6 @@ class BulkGmailWorker
     logger.info "Getting page #{current_page} of messages for #{user.email}"
 
     if page.data.messages.count == 0
-      require 'pry'; binding.pry; 1
       logger.info "Page was empty"
       return
     end
