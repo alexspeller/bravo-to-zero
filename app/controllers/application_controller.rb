@@ -3,7 +3,11 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  force_ssl if: Rails.env.production?, host:'vast-depths-1206.herokuapp.com'
+  force_ssl if: :is_production?, host:'vast-depths-1206.herokuapp.com'
+
+  def is_production?
+    Rails.env.production?
+  end
 
   private
 
