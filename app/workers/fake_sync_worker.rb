@@ -12,8 +12,8 @@ class FakeSyncWorker < FakeWorker
 
   def do_action
 
-    common_emails = (0..20).map {Faker::Internet.email}
-    common_names = (0..10).map {Faker::Name.name}
+    common_emails = (0..10).map {Faker::Internet.email}
+    common_names = (0..5).map {Faker::Name.name}
     (0...total_count).to_a.in_groups_of(10) do |group|
       group.each do |i|
         if rand < 0.5
