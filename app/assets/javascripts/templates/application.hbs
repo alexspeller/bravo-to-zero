@@ -6,9 +6,9 @@
     Logged in as {{session.user.name}}
     <button {{action 'logOut'}}>Log out</button>
     You have {{session.user.message_count}} messages in your inbox
+    {{outlet}}
   {{else}}
     <a href="/auth/google_oauth2">Log in with Google</a>
   {{/if}}
 
-  {{outlet}}
 </div>
