@@ -1,3 +1,31 @@
+{{#unless model.length}}
+  <p>
+    <em>No messages here!</em>
+  </p>
+
+  <div class="row">
+    <div class="col-md-12">
+      {{#if progressType}}
+        <div class="alert alert-info">
+          <h4>
+            {{progressType}}
+            {{#if progressComplete}}
+              - Complete!
+            {{/if}}
+          </h4>
+          <p>
+            <div class="progress">
+              <div class="progress-bar" {{bind-attr style=progressStyle}}>
+                {{progressPercentage}}%
+              </div>
+            </div>
+          </p>
+        </div>
+      {{/if}}
+
+    </div>
+  </div>
+{{/unless}}
 {{#if model.length}}
   <div class="row">
     <div class="col-md-12">

@@ -24,4 +24,19 @@ class OmniauthController < ApplicationController
     redirect_to root_url
   end
 
+  def fake
+    user = User.create!(
+      name:       Faker::Name.name,
+      email:      Faker::Internet.email,
+      image_url:  "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50",
+      is_fake:    true
+    )
+
+    session[:user_id] = user.id
+
+    FakeSyncWorker.perform_async(user.id)
+
+    redirect_to root_url
+  end
+
 end

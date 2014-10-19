@@ -3,5 +3,5 @@ class Message < ActiveRecord::Base
 
   validates :google_id, presence: true, uniqueness: true
 
-  validates :from, :to, :subject, :date, :thread_id, :history_id, presence: true
+  validates :from, :to, :subject, :date, presence: true
 end

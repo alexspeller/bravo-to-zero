@@ -48,6 +48,7 @@ gem 'pusher'
 gem 'rails_12factor'
 gem 'momentjs-rails'
 gem "nvd3-rails", github: "adeven/nvd3-rails", submodules: true
+gem 'faker'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

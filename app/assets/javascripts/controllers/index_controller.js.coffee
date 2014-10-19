@@ -144,10 +144,11 @@ App.IndexController = Em.Controller.extend
     messagesToRemove = @get('model').filter (message) ->
       ~messageIds.indexOf message.id
 
-    tableLength = @get('tableMessages.length')
     @get('model').removeObjects messagesToRemove
-    if tableLength > 0 and @get('tableMessages.length') is 0
-      @set 'selectedGroup', null
+    Em.run.next =>
+      console.log @get('tableMessages.length')
+      if @get('tableMessages.length') is 0
+        @set 'selectedGroup', null
 
   isFilteringByfrom:        Em.computed.equal 'filterKey', 'from'
   isFilteringByfromEmail:   Em.computed.equal 'filterKey', 'fromEmail'

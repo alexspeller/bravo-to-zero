@@ -3,7 +3,11 @@ class Api::ArchiveRequestsController < ApiController
     if current_user.is_syncing?
       render_sync_busy
     else
-      ArchiveWorker.perform_async current_user.id, params[:ids]
+      if current_user.is_fake?
+        FakeArchiveWorker.perform_async current_user.id, params[:ids]
+      else
+        ArchiveWorker.perform_async current_user.id, params[:ids]
+      end
       head :ok
     end
   end

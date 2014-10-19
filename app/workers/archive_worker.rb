@@ -38,34 +38,22 @@ class ArchiveWorker < BulkGmailWorker
   end
 
 
-
-  def request_message_action id
-    {
-      api_method: $gmail_api.users.messages.get,
-      parameters: {
-        userId: 'me',
-        id: id,
-        format: 'metadata'
-      }
-    }
-  end
-
   def page_complete page
     user.push 'messages-archived', ids: page
   end
-  # def request_message_action id
-  #   logger.info "Request message action for #{id}"
-  #   {
-  #     api_method: $gmail_api.users.messages.modify,
-  #     parameters: {
-  #       userId: 'me',
-  #       id: id
-  #     },
-  #     body_object: {
-  #       removeLabelIds: ['INBOX']
-  #     }
-  #   }
-  # end
+  def request_message_action id
+    logger.info "Request message action for #{id}"
+    {
+      api_method: $gmail_api.users.messages.modify,
+      parameters: {
+        userId: 'me',
+        id: id
+      },
+      body_object: {
+        removeLabelIds: ['INBOX']
+      }
+    }
+  end
 
   def perform_message_action message
     user.messages.find_by(google_id: message.data.id).try :destroy

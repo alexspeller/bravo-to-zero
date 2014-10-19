@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   get "/auth/:provider/callback" => "omniauth#callback"
+  get "/auth/fake" => "omniauth#fake"
 
 
   namespace :api do

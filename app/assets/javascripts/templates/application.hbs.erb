@@ -16,6 +16,7 @@
       </ul>
       <p class="navbar-text navbar-right">
         Logged in as {{session.user.name}}
+        <img {{bind-attr src=session.user.image_url}}>
       </p>
     {{else}}
       <a href="/auth/google_oauth2" class="btn btn-default navbar-btn navbar-right">
@@ -38,6 +39,15 @@
         <span class="stripe">
           Get your inbox back to zero in record time
         </span>
+      </p>
+      <p>
+        <a href="/auth/google_oauth2" class="btn btn-default btn-lg">
+          Log in with Google
+        </a>
+        <a href="/auth/fake" class="btn btn-default btn-lg">
+          Try demo with fake data
+        </a>
+
       </p>
     </div>
   </div>

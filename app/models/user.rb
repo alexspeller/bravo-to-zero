@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
-  validates :name, :email, :refresh_token, presence: true
+  validates :name, :email, presence: true
   validates :email, email: true
+
+  validates :refresh_token, presence: true, unless: :is_fake?
 
   has_many :messages, dependent: :destroy
 
