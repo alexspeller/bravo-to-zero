@@ -31,7 +31,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h3>Message distribution</h3>
+      <h3>Message distribution of {{model.length}} messages in your inbox</h3>
       <p>Hover over a bar to see which group it represents. Click a bar to select that group.</p>
       <p>
         {{bar-chart columns=groups action="chartClicked"}}
@@ -63,7 +63,7 @@
   </div>
   <div class="row">
     <div class="col-md-3">
-      <h3>Grouping by {{filterKeyTitle}}</h3>
+      <h3>Step 2: Group</h3>
       <p>Select a group to show messages</p>
       <div class="table-container">
         {{table-component
@@ -94,7 +94,7 @@
         </div>
       {{else}}
         <p>
-          <em>Select a group to view the messages in it</em>
+          <em>Select a group first, messages will be shown here</em>
         </p>
       {{/if}}
     </div>
