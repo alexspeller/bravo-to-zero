@@ -119,6 +119,7 @@ App.IndexController = Em.Controller.extend
 
     if data.percentage is 'complete'
       @set 'progressComplete', true
+      @set 'progressPercentage', 100
       @send 'refreshData'
       Em.run.later =>
         @setProperties
@@ -142,6 +143,9 @@ App.IndexController = Em.Controller.extend
     alert msg
 
   actions:
+    chartClicked: (groupRow) ->
+      @set 'selectedGroup', groupRow
+
     setFilter: (key) -> @set 'filterKey', key
 
     archiveAll: ->

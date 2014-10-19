@@ -10,6 +10,7 @@
 //= require ember-table
 //= require ic.ajax
 //= require bravo
+//= require hacks
 //= require_self
 
 window.ajax = ic.ajax;
