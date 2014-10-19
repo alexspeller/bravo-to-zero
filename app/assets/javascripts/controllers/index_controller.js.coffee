@@ -130,6 +130,7 @@ App.IndexController = Em.Controller.extend
       progressType:       data.type
 
     if data.percentage is 'complete'
+      @set 'selectedGroup', null
       @set 'progressComplete', true
       @set 'progressPercentage', 100
       @send 'refreshData'
