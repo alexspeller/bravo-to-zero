@@ -4,6 +4,8 @@ Inbox Zero is great in theory, but it's easy to let it slip and suddenly there a
 
 Bravo to Zero makes it easy to get back to zero, by showing you groups of emails that you can archive in bulk. Try it now with your real Google Mail account, or with dummy data.
 
+![Screenshot](https://raw.githubusercontent.com/railsrumble/r14-team-94/master/app/assets/images/screenshot.png)
+
 ## Requirements
 
 You can install this app on your own heroku instance or locally if you like. The requirements are:
@@ -13,7 +15,6 @@ You can install this app on your own heroku instance or locally if you like. The
 * Redis
 * Google api tokens
 * A pusher account
-
 
 
 ## Setup
