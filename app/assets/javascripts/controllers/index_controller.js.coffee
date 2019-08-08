@@ -49,15 +49,20 @@ App.IndexController = Em.Controller.extend
             'Between 1 week ago and yesterday'
           else
             'Today'
+      when 'label'
+        (message) ->
+          message.labels
 
   groups: prop 'model.[]', 'groupFunc', ->
     groups = {}
     groupFunc = @get 'groupFunc'
 
     @get('model').forEach (message) ->
-      value = groupFunc message
-      groups[value] ||= 0
-      groups[value]++
+      values = groupFunc message
+      values = [values] unless Ember.isArray(values)
+      values.forEach (value) ->
+        groups[value] ||= 0
+        groups[value]++
 
     Em.keys(groups).map (key) ->
       val = groups[key]
@@ -103,16 +108,22 @@ App.IndexController = Em.Controller.extend
       headerCellName: "Date"
       getCellContent: (row) ->
         moment(row.content.date).calendar()
+
+    labels = Ember.Table.ColumnDefinition.create
+      headerCellName: "Label"
+      getCellContent: (row) ->
+        row.content.labels.join " | "
     snippet = Ember.Table.ColumnDefinition.create
       defaultColumnWidth: 250
       headerCellName: "Preview"
       getCellContent: (row) ->
-        row.content.snippet
+        row.content.snippet.htmlSafe()
     [
       from
       to
       subject
       date
+      labels
       snippet
     ]
 
@@ -120,7 +131,9 @@ App.IndexController = Em.Controller.extend
     [groupFunc, value] = [@get('groupFunc'), @get('filterValue')]
     return [] unless groupFunc and value
     @get('model').filter (message) ->
-      groupFunc(message) is value
+      messageValues = groupFunc(message)
+      messageValues = [messageValues] unless Ember.isArray(messageValues)
+      messageValues.includes(value)
     .sort (a, b) ->
       b.date - a.date
 
@@ -157,6 +170,7 @@ App.IndexController = Em.Controller.extend
   isFilteringBysubject:     Em.computed.equal 'filterKey', 'subject'
   isFilteringByto:          Em.computed.equal 'filterKey', 'to'
   isFilteringBydate:        Em.computed.equal 'filterKey', 'date'
+  isFilteringBylabel:        Em.computed.equal 'filterKey', 'label'
 
   progressStyle: prop 'progressPercentage', ->
     "width: #{@get 'progressPercentage'}%; min-width: 20px;"

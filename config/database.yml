@@ -2,8 +2,5 @@ development:
   database: bravo_development
   adapter: postgresql
   encoding: utf8
-  username: bravo
-  password: bravo
   pool: 60
   timeout: 5000
-  host: localhost

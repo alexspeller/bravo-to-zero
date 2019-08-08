@@ -28,7 +28,7 @@
 </nav>
 
 {{#if session.user}}
-  <div class="container">
+  <div class="container-fluid">
     {{outlet}}
   </div>
 {{else}}
@@ -64,16 +64,3 @@
   </div>
 {{/if}}
 
-
-<div id="footer">
-  <div class="container">
-    <p class="muted credit text-center">
-      This project was built in 48 hours for the 2014 Rails Rumble by
-      <a href="http://twitter.com/alexspeller">@alexspeller</a>
-    </p>
-  </div>
-</div>
-{{#if isShowingVoteBanner}}
-  <div id="rumble2014" style="position: fixed; display: block; width: 100%; z-index: 99999; bottom: 0px; left: 0px; padding: 10px 0px; text-align: center; margin: 0px; color: rgb(176, 176, 176); background-color: rgb(22, 22, 22);"><span>You can <a href="http://railsrumble.com/?view=http://bravo.r14.railsrumble.com" style="color: #fc4b52; font-weight: bolder; text-decoration: none;">vote for us</a>
-  in the <a href="http://railsrumble.com" style="color: rgb(255, 255, 255); font-weight: bolder; text-decoration: none;">2014 Rails Rumble</a>!</span><span id="rumbleCloseButton" style="position: absolute; right: 12px; cursor: pointer; top: 8px;" {{action 'hideBanner'}}>x</span></div>
-{{/if}}

@@ -7,9 +7,12 @@ class Api::MessagesController < ApiController
         to:       message.to,
         subject:  message.subject,
         date:     message.date,
-        snippet:  message.snippet
+        snippet:  message.snippet,
+        labels:   message.labels,
+        url: "https://mail.google.com/mail?authuser=alex@alexspeller.com#all/#{id_for(message)}"
       }
     end
+
     render json: Yajl::Encoder.encode(messages)
   end
 

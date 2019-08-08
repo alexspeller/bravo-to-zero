@@ -11,11 +11,7 @@ class SyncWorker < BulkGmailWorker
   end
 
   def query_total
-    params      = {userId: 'me', id: 'INBOX'}
-
-    result = $google_api_client.execute(api_method: $gmail_api.users.labels.get,
-      parameters: params,
-      authorization: auth)
+    result = get_label 'INBOX'
 
     @total_count = result.data.messages_total
   end
@@ -40,7 +36,7 @@ class SyncWorker < BulkGmailWorker
       date:       find_header('Date', message),
       thread_id:  message.data.thread_id,
       history_id: message.data.history_id,
-      labels: message.data.label_ids
+      labels: message.data.label_ids.map{|l| get_label_name(l) }
   rescue
     logger.error "Could not cache message #{message.data.id} for user #{user.email}"
   end
@@ -53,6 +49,21 @@ class SyncWorker < BulkGmailWorker
     page.next_page_token
   end
 
+  def get_label label
+    params      = {userId: 'me', id: label}
+
+    $google_api_client.execute(api_method: $gmail_api.users.labels.get,
+      parameters: params,
+      authorization: auth)
+  end
+
+  def get_label_name label
+    @cached_names ||= {}
+
+    return @cached_names[label] if @cached_names[label]
+
+    @cached_names[label] = get_label(label).data.name
+  end
 
   def find_header header_name, message
     message.data.payload.headers.find{|h| h.name.strip.downcase == header_name.downcase }.value

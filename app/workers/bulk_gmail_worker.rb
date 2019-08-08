@@ -43,7 +43,7 @@ class BulkGmailWorker
   end
 
   def get_next_page page = nil
-    params              = {userId: 'me', labelIds: 'INBOX', maxResults: 10}
+    params              = {userId: 'me', labelIds: 'INBOX', maxResults: 50}
     params[:pageToken]  = page if page.present?
 
     page = $google_api_client.execute(api_method: $gmail_api.users.messages.list,
@@ -86,7 +86,6 @@ class BulkGmailWorker
     page_complete page
 
     if next_page_for_page(page)
-      sleep 1 # Sleep is due to api rate limiting
       get_next_page next_page_for_page(page)
     end
 
