@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/adeven/nvd3-rails.git
+  remote: https://github.com/adeven/nvd3-rails.git
   revision: 6fc0e3f1b32f8c58d59c102b1ad4c7c2f6deceb1
   submodules: true
   specs:
@@ -248,7 +248,7 @@ GEM
     validator (0.1.1)
       activemodel (>= 3.0.0)
       ipaddress
-    yajl-ruby (1.2.1)
+    yajl-ruby (1.4.1)
 
 PLATFORMS
   ruby
